@@ -11,9 +11,7 @@ import {
   AbstractMesh,
   Vector3,
   ImportMeshAsync,
-  CubicEase,
   TransformNode,
-  EasingFunction,
   Color4,
   Color3,
   DirectionalLight,
@@ -65,25 +63,24 @@ const changeScale = (mesh: AbstractMesh, scale: number) => {
   mesh.computeWorldMatrix(true);
 };
 
-const playRotationAnim = (scene: Scene, mesh: AbstractMesh) => {
+const playRotationAnim = (scene: Scene, pivot: TransformNode) => {
   const fps = 60;
-  const totalFrames = 90;
+  const totalFrames = 72;
 
   const rotAnim = new Animation(
-    'basketRotY',
+    'pivotRotY',
     'rotation.y',
     fps,
     Animation.ANIMATIONTYPE_FLOAT,
     Animation.ANIMATIONLOOPMODE_CONSTANT
   );
+
   rotAnim.setKeys([
-    { frame: 0, value: -0.6 },
-    { frame: Math.floor(totalFrames * 0.6), value: 0.15 },
-    { frame: Math.floor(totalFrames * 0.8), value: -0.05 },
+    { frame: 0, value: Math.PI * 0.35 },
     { frame: totalFrames, value: 0 },
   ]);
 
-  scene.beginDirectAnimation(mesh, [rotAnim], 0, totalFrames, false);
+  scene.beginDirectAnimation(pivot, [rotAnim], 0, totalFrames, false);
 };
 
 export default function HeroBasket() {
@@ -196,14 +193,18 @@ export default function HeroBasket() {
       basketMeshRef.current = basketMesh;
 
       changeScale(basketMesh.root, 3.3);
-
       changePosition(basketMesh.root, new Vector3(0, 2.62, 0));
-      basketMesh.root.rotation.y = -0.6;
 
-      basketMesh.root.parent = worldRoot;
+      const pivot = new TransformNode('pivot', sceneElement);
+      pivot.position = new Vector3(0, 2.62, 0);
+      pivot.rotation.y = Math.PI * 0.35;
+      pivot.parent = worldRoot;
+
+      basketMesh.root.parent = pivot;
+      basketMesh.root.position = new Vector3(0, 0, 0);
 
       setLoaded(true);
-      playRotationAnim(sceneElement, basketMesh.root);
+      playRotationAnim(sceneElement, pivot);
     };
 
     loadModule();
@@ -212,7 +213,7 @@ export default function HeroBasket() {
   return (
     <canvas
       ref={canvas}
-      className={`w-full h-full transition-transform duration-[1.5s] ease-[cubic-bezier(0.33,1,0.68,1)] ${
+      className={`w-full h-full transition-transform duration-[1.45s] ease-[cubic-bezier(0.33,1,0.68,1)] ${
         loaded ? 'translate-x-0' : 'translate-x-[120%]'
       }`}
     />

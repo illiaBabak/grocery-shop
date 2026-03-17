@@ -15,7 +15,11 @@ export default function Header() {
     setSearch(searchParams.get('search') || '');
   }, [searchParams]);
 
-  const handleSearch = () => router.push(`/main?search=${encodeURIComponent(search.trim())}`);
+  const handleSearch = () => {
+    if (search.trim()) {
+      router.push(`/main?search=${encodeURIComponent(search.trim())}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/70 border-b border-green-100">

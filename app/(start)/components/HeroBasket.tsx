@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '@babylonjs/loaders';
 import {
   Engine,
@@ -65,42 +65,25 @@ const changeScale = (mesh: AbstractMesh, scale: number) => {
   mesh.computeWorldMatrix(true);
 };
 
-const playTonearmAnim = (
-  scene: Scene,
-  pivotNode: TransformNode,
-  startAngle: number,
-  endAngle: number,
-  isReverse: boolean
-) => {
-  return new Promise<void>((resolve) => {
-    const fps = 60;
-    const totalFrames = 40;
+const playRotationAnim = (scene: Scene, mesh: AbstractMesh) => {
+  const fps = 60;
+  const totalFrames = 90;
 
-    const anim = new Animation(
-      'tonearmRotate',
-      'rotation.y',
-      fps,
-      Animation.ANIMATIONTYPE_FLOAT,
-      Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
+  const rotAnim = new Animation(
+    'basketRotY',
+    'rotation.y',
+    fps,
+    Animation.ANIMATIONTYPE_FLOAT,
+    Animation.ANIMATIONLOOPMODE_CONSTANT
+  );
+  rotAnim.setKeys([
+    { frame: 0, value: -0.6 },
+    { frame: Math.floor(totalFrames * 0.6), value: 0.15 },
+    { frame: Math.floor(totalFrames * 0.8), value: -0.05 },
+    { frame: totalFrames, value: 0 },
+  ]);
 
-    anim.setKeys([
-      { frame: 0, value: isReverse ? endAngle : startAngle },
-      { frame: totalFrames, value: isReverse ? startAngle : endAngle },
-    ]);
-
-    const ease = new CubicEase();
-    ease.setEasingMode(EasingFunction.EASINGMODE_EASEINOUT);
-    anim.setEasingFunction(ease);
-
-    scene.stopAnimation(pivotNode);
-
-    const animation = scene.beginDirectAnimation(pivotNode, [anim], 0, totalFrames, false);
-
-    animation.onAnimationEndObservable.add(() => {
-      resolve();
-    });
-  });
+  scene.beginDirectAnimation(mesh, [rotAnim], 0, totalFrames, false);
 };
 
 export default function HeroBasket() {
@@ -110,6 +93,7 @@ export default function HeroBasket() {
   const camera = useRef<ArcRotateCamera>(null);
   const light = useRef<HemisphericLight>(null);
   const basketMeshRef = useRef<Imported | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   // Initialize Babylon.js
   useEffect(() => {
@@ -214,12 +198,23 @@ export default function HeroBasket() {
       changeScale(basketMesh.root, 3.3);
 
       changePosition(basketMesh.root, new Vector3(0, 2.62, 0));
+      basketMesh.root.rotation.y = -0.6;
 
       basketMesh.root.parent = worldRoot;
+
+      setLoaded(true);
+      playRotationAnim(sceneElement, basketMesh.root);
     };
 
     loadModule();
   }, [scene]);
 
-  return <canvas ref={canvas} className="w-full h-full" />;
+  return (
+    <canvas
+      ref={canvas}
+      className={`w-full h-full transition-transform duration-[1.5s] ease-[cubic-bezier(0.33,1,0.68,1)] ${
+        loaded ? 'translate-x-0' : 'translate-x-[120%]'
+      }`}
+    />
+  );
 }

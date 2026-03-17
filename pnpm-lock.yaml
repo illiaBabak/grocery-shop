@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@babylonjs/core':
+        specifier: ^8.55.3
+        version: 8.55.3
+      '@babylonjs/loaders':
+        specifier: ^8.55.3
+        version: 8.55.3(@babylonjs/core@8.55.3)(babylonjs-gltf2interface@8.55.3)
       motion:
         specifier: ^12.37.0
         version: 12.37.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -118,6 +124,15 @@ packages:
   '@babel/types@7.29.0':
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
+
+  '@babylonjs/core@8.55.3':
+    resolution: {integrity: sha512-kp0OE/9ZMjI9NyjcpXvQs41AlzpajVl9uVynZNoysXE5WMXWvUAJjv9MXGBKnEzUqwpjmOv8sYsvTpkjxo+wyw==}
+
+  '@babylonjs/loaders@8.55.3':
+    resolution: {integrity: sha512-WWgqr4pqtScMMgsW39AhOOm1MJ3/J6RV8dkcM67P6oQVI1YquJyvs8Dis+gP+hK5hBBCKS3+5Fr09D7Lwxvxgw==}
+    peerDependencies:
+      '@babylonjs/core': ^8.0.0
+      babylonjs-gltf2interface: ^8.0.0
 
   '@emnapi/core@1.9.0':
     resolution: {integrity: sha512-0DQ98G9ZQZOxfUcQn1waV2yS8aWdZ6kJMbYCJB3oUBecjWYO1fqJ+a1DRfPF3O5JEkwqwP1A9QEN/9mYm2Yd0w==}
@@ -753,6 +768,9 @@ packages:
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
+
+  babylonjs-gltf2interface@8.55.3:
+    resolution: {integrity: sha512-3gorfDBSOm8oz+12Q084sbCDrTJN8SiRIKGNZDVjosuC6YG/vpARu/6fi4aIpk2oyklRANXG/UD9qtGVoK1DEA==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -2060,6 +2078,13 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
+  '@babylonjs/core@8.55.3': {}
+
+  '@babylonjs/loaders@8.55.3(@babylonjs/core@8.55.3)(babylonjs-gltf2interface@8.55.3)':
+    dependencies:
+      '@babylonjs/core': 8.55.3
+      babylonjs-gltf2interface: 8.55.3
+
   '@emnapi/core@1.9.0':
     dependencies:
       '@emnapi/wasi-threads': 1.2.0
@@ -2647,6 +2672,8 @@ snapshots:
   axe-core@4.11.1: {}
 
   axobject-query@4.1.0: {}
+
+  babylonjs-gltf2interface@8.55.3: {}
 
   balanced-match@1.0.2: {}
 

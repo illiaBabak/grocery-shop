@@ -1,5 +1,6 @@
 import HeroContent from './components/HeroContent';
 import HeroBasket from './components/HeroBasket';
+import Sections from './components/Sections';
 
 export default function StartPage() {
   return (
@@ -12,6 +13,7 @@ export default function StartPage() {
           <HeroBasket />
         </div>
       </div>
+      <Sections />
     </section>
   );
 }

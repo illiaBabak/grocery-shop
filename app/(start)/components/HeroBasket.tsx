@@ -129,6 +129,8 @@ export default function HeroBasket() {
 
     camera.current.lowerBetaLimit = camera.current.beta;
     camera.current.upperBetaLimit = camera.current.beta;
+    camera.current.lowerRadiusLimit = camera.current.radius;
+    camera.current.upperRadiusLimit = camera.current.radius;
     camera.current.attachControl(canvasElement, true);
 
     light.current = new HemisphericLight('hemiLight', new Vector3(0, 1, 0), scene.current);

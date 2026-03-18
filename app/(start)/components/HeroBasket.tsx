@@ -15,7 +15,6 @@ import {
   Color4,
   Color3,
   DirectionalLight,
-  PointLight,
   CubeTexture,
 } from '@babylonjs/core';
 
@@ -83,6 +82,15 @@ const playRotationAnim = (scene: Scene, pivot: TransformNode) => {
   scene.beginDirectAnimation(pivot, [rotAnim], 0, totalFrames, false);
 };
 
+const getScaleByViewport = () => {
+  const width = window.innerWidth;
+
+  if (width >= 1280) return 3.3;
+  else if (width >= 1024 && width < 1280) return 2.2;
+  else if (width >= 900 && width < 1024) return 2.1;
+  return 1.8;
+};
+
 export default function HeroBasket() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const scene = useRef<Scene>(null);
@@ -123,46 +131,38 @@ export default function HeroBasket() {
     camera.current.upperBetaLimit = camera.current.beta;
     camera.current.attachControl(canvasElement, true);
 
-    light.current = new HemisphericLight('hemiLight', new Vector3(-0.6, 1, 0.3), scene.current);
-    light.current.intensity = 1.2;
-    light.current.diffuse = new Color3(1.0, 0.96, 0.9);
-    light.current.specular = new Color3(1.0, 0.97, 0.92);
-    light.current.groundColor = new Color3(0.85, 0.76, 0.66);
+    light.current = new HemisphericLight('hemiLight', new Vector3(0, 1, 0), scene.current);
+    light.current.intensity = 0.9;
+    light.current.diffuse = new Color3(0.95, 0.95, 0.97);
+    light.current.specular = new Color3(0.3, 0.3, 0.3);
+    light.current.groundColor = new Color3(0.4, 0.4, 0.42);
 
-    const keyLight = new DirectionalLight(
-      'keyLight',
-      new Vector3(-0.75, -0.55, 0.3),
+    const keyLight = new DirectionalLight('keyLight', new Vector3(-0.8, -0.6, 0.2), scene.current);
+    keyLight.intensity = 0.85;
+    keyLight.diffuse = new Color3(0.98, 0.96, 0.93);
+    keyLight.specular = new Color3(0.4, 0.4, 0.4);
+
+    const fillLight = new DirectionalLight(
+      'fillLight',
+      new Vector3(0.6, -0.3, -0.5),
       scene.current
     );
-    keyLight.intensity = 0.9;
-    keyLight.diffuse = new Color3(1.0, 0.94, 0.84);
-    keyLight.specular = new Color3(1.0, 0.97, 0.92);
+    fillLight.intensity = 0.45;
+    fillLight.diffuse = new Color3(0.85, 0.88, 0.95);
+    fillLight.specular = new Color3(0.2, 0.2, 0.2);
 
-    const frontLight = new DirectionalLight(
-      'frontLight',
-      new Vector3(-0.5, -0.7, -0.4),
-      scene.current
-    );
-    frontLight.intensity = 0.55;
-    frontLight.diffuse = new Color3(1.0, 0.92, 0.82);
-    frontLight.specular = new Color3(1.0, 0.96, 0.9);
-
-    const fillLight = new PointLight('fillLight', new Vector3(-2, 6, 1), scene.current);
-    fillLight.intensity = 0.4;
-    fillLight.diffuse = new Color3(1.0, 0.9, 0.78);
-
-    const rimLight = new DirectionalLight('rimLight', new Vector3(0.7, -0.4, -0.6), scene.current);
-    rimLight.intensity = 0.9;
-    rimLight.diffuse = new Color3(1.0, 0.88, 0.72);
+    const rimLight = new DirectionalLight('rimLight', new Vector3(0.3, -0.2, 0.8), scene.current);
+    rimLight.intensity = 0.3;
+    rimLight.diffuse = new Color3(0.9, 0.9, 0.92);
 
     scene.current.environmentTexture = CubeTexture.CreateFromPrefilteredData(
       'https://assets.babylonjs.com/environments/environmentSpecular.env',
       scene.current
     );
-    scene.current.environmentIntensity = 0.6;
+    scene.current.environmentIntensity = 0.5;
 
-    scene.current.imageProcessingConfiguration.contrast = 1;
-    scene.current.imageProcessingConfiguration.exposure = 1.15;
+    scene.current.imageProcessingConfiguration.contrast = 1.1;
+    scene.current.imageProcessingConfiguration.exposure = 1.1;
     scene.current.imageProcessingConfiguration.toneMappingEnabled = true;
     scene.current.imageProcessingConfiguration.toneMappingType = 1;
 
@@ -192,7 +192,7 @@ export default function HeroBasket() {
 
       basketMeshRef.current = basketMesh;
 
-      changeScale(basketMesh.root, 3.3);
+      changeScale(basketMesh.root, getScaleByViewport());
       changePosition(basketMesh.root, new Vector3(0, 2.62, 0));
 
       const pivot = new TransformNode('pivot', sceneElement);
@@ -213,7 +213,7 @@ export default function HeroBasket() {
   return (
     <canvas
       ref={canvas}
-      className={`w-full h-full transition-transform duration-[1.45s] ease-[cubic-bezier(0.33,1,0.68,1)] ${
+      className={`w-full h-full focus:outline-none cursor-grab transition-transform duration-[1.45s] ease-[cubic-bezier(0.33,1,0.68,1)] ${
         loaded ? 'translate-x-0' : 'translate-x-[120%]'
       }`}
     />

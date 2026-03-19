@@ -134,37 +134,37 @@ export default function HeroBasket() {
     camera.current.attachControl(canvasElement, true);
 
     light.current = new HemisphericLight('hemiLight', new Vector3(0, 1, 0), scene.current);
-    light.current.intensity = 0.9;
-    light.current.diffuse = new Color3(0.95, 0.95, 0.97);
-    light.current.specular = new Color3(0.3, 0.3, 0.3);
-    light.current.groundColor = new Color3(0.4, 0.4, 0.42);
+    light.current.intensity = 1.15;
+    light.current.diffuse = new Color3(1.0, 0.98, 0.92);
+    light.current.specular = new Color3(0.35, 0.33, 0.28);
+    light.current.groundColor = new Color3(0.55, 0.52, 0.45);
 
-    const keyLight = new DirectionalLight('keyLight', new Vector3(-0.8, -0.6, 0.2), scene.current);
-    keyLight.intensity = 0.85;
-    keyLight.diffuse = new Color3(0.98, 0.96, 0.93);
-    keyLight.specular = new Color3(0.4, 0.4, 0.4);
+    const keyLight = new DirectionalLight('keyLight', new Vector3(-0.7, -0.5, 0.3), scene.current);
+    keyLight.intensity = 1.1;
+    keyLight.diffuse = new Color3(1.0, 0.95, 0.85);
+    keyLight.specular = new Color3(0.45, 0.42, 0.35);
 
     const fillLight = new DirectionalLight(
       'fillLight',
       new Vector3(0.6, -0.3, -0.5),
       scene.current
     );
-    fillLight.intensity = 0.45;
-    fillLight.diffuse = new Color3(0.85, 0.88, 0.95);
-    fillLight.specular = new Color3(0.2, 0.2, 0.2);
+    fillLight.intensity = 0.6;
+    fillLight.diffuse = new Color3(0.95, 0.93, 0.85);
+    fillLight.specular = new Color3(0.2, 0.18, 0.15);
 
     const rimLight = new DirectionalLight('rimLight', new Vector3(0.3, -0.2, 0.8), scene.current);
-    rimLight.intensity = 0.3;
-    rimLight.diffuse = new Color3(0.9, 0.9, 0.92);
+    rimLight.intensity = 0.4;
+    rimLight.diffuse = new Color3(1.0, 0.97, 0.88);
 
     scene.current.environmentTexture = CubeTexture.CreateFromPrefilteredData(
       'https://assets.babylonjs.com/environments/environmentSpecular.env',
       scene.current
     );
-    scene.current.environmentIntensity = 0.5;
+    scene.current.environmentIntensity = 0.65;
 
-    scene.current.imageProcessingConfiguration.contrast = 1.1;
-    scene.current.imageProcessingConfiguration.exposure = 1.1;
+    scene.current.imageProcessingConfiguration.contrast = 1.15;
+    scene.current.imageProcessingConfiguration.exposure = 1.25;
     scene.current.imageProcessingConfiguration.toneMappingEnabled = true;
     scene.current.imageProcessingConfiguration.toneMappingType = 1;
 

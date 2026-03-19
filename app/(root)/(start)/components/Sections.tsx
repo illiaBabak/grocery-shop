@@ -51,18 +51,12 @@ export default function Sections() {
       {SECTIONS.map((section) => (
         <Link key={`${section.title}-section`} href={`/main?section=${section.title}`}>
           <div
-            className={`${section.color} relative aspect-square rounded-3xl flex flex-col items-center justify-between p-6 cursor-pointer hover:scale-105 transition-transform overflow-hidden`}
+            className={`${section.color} relative aspect-square rounded-3xl flex flex-col items-stretch p-6 cursor-pointer hover:scale-105 transition-transform overflow-hidden`}
           >
-            <div className="flex-1 flex items-center justify-center">
-              <Image
-                src={section.image}
-                alt={section.title}
-                width={250}
-                height={250}
-                className="object-contain"
-              />
+            <div className="relative flex-1">
+              <Image src={section.image} alt={section.title} fill className="object-contain" />
             </div>
-            <span className="w-full text-left text-gray-700 font-semibold text-sm">
+            <span className="w-full text-left text-gray-700 font-semibold text-sm mt-2 shrink-0">
               {capitalize(section.title)}
             </span>
           </div>

@@ -1,6 +1,6 @@
 import HeroContent from './components/HeroContent';
 import HeroBasket from './components/HeroBasket';
-import Sections from './components/Sections';
+import Categories from './components/Categories';
 
 export default function StartPage() {
   return (
@@ -14,7 +14,7 @@ export default function StartPage() {
         </div>
       </div>
       <div className="mx-auto max-w-7xl w-full px-6 py-12">
-        <Sections />
+        <Categories />
       </div>
     </section>
   );

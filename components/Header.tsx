@@ -9,16 +9,21 @@ export default function Header() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [search, setSearch] = useState('');
+  const searchQuery = pathname === '/main' ? searchParams.get('search') ?? '' : '';
+
+  const [search, setSearch] = useState(searchQuery);
 
   useEffect(() => {
-    setSearch(searchParams.get('search') || '');
-  }, [searchParams]);
+    setSearch(searchQuery);
+  }, [searchQuery]);
 
-  const handleSearch = () => {
-    if (search.trim()) {
-      router.push(`/main?search=${encodeURIComponent(search.trim())}`);
-    }
+  const handleSearch = (search: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (search.trim()) params.set('search', search);
+    else params.delete('search');
+
+    router.push(`/main?${params}`);
   };
 
   return (
@@ -74,8 +79,10 @@ export default function Header() {
                 type="text"
                 value={search}
                 onChange={({ currentTarget: { value } }) => setSearch(value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                onBlur={handleSearch}
+                onKeyDown={({ currentTarget, key }) => {
+                  if (key === 'Enter') currentTarget.blur();
+                }}
+                onBlur={({ currentTarget: { value } }) => handleSearch(value)}
                 placeholder="Search..."
                 className="w-full md:w-56 pl-9 pr-3 py-1.5 sm:py-2 rounded-full bg-green-50/80 border border-green-200 text-xs sm:text-sm text-gray-700 placeholder:text-gray-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
               />

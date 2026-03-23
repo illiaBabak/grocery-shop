@@ -12,7 +12,35 @@ datasource db {
   provider = "postgresql"
 }
 
-model Test {
-  id Int @id @default(autoincrement())
-  name String @unique
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  reviews      Review[]
+  createdAt    DateTime @default(now())
+}
+
+model Food {
+  id          String   @id @default(uuid())
+  name        String
+  imageUrl    String
+  priceBy1kg  Float
+  category    String
+  description String
+  reviews     Review[]
+  createdAt   DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  content   String
+  stars     Int
+  createdAt DateTime @default(now())
+
+  foodId    String
+  food      Food     @relation(fields: [foodId], references: [id])
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }

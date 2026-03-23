@@ -2,55 +2,66 @@
 
 import { CATEGORIES } from '@/utils/constants';
 import { capitalize } from '@/utils/capitalize';
-import { useEffect, useState } from 'react';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
 const STARS = [5, 4, 3, 2, 1];
 
-const MIN_PRICE = 1;
-const MAX_PRICE = 50;
+const MIN_PRICE_DEFAULT = 1;
+const MAX_PRICE_DEFAULT = 50;
 
 export default function Filters() {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const categories = searchParams.getAll('category');
-
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(categories);
-  const [minPrice, setMinPrice] = useState(MIN_PRICE);
-  const [maxPrice, setMaxPrice] = useState(MAX_PRICE);
-  const [selectedStars, setSelectedStars] = useState<number[]>([]);
+  const stars = searchParams.getAll('star');
+  const minPrice = Number(searchParams.get('min-price') ?? MIN_PRICE_DEFAULT);
+  const maxPrice = Number(searchParams.get('max-price') ?? MAX_PRICE_DEFAULT);
 
   const toggleCategory = (title: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(title) ? prev.filter((c) => c !== title) : [...prev, title]
-    );
-  };
-
-  const toggleStar = (star: number) => {
-    setSelectedStars((prev) =>
-      prev.includes(star) ? prev.filter((s) => s !== star) : [...prev, star]
-    );
-  };
-
-  useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
+
+    const newCategories = categories.includes(title)
+      ? categories.filter((c) => c !== title)
+      : [...categories, title];
 
     params.delete('category');
 
-    selectedCategories.forEach((category) => params.append('category', category));
+    newCategories.forEach((c) => params.append('category', c));
 
-    params.set('min-price', minPrice.toString());
+    router.push(`${pathname}?${params}`);
+  };
 
-    params.set('max-price', maxPrice.toString());
+  const toggleStar = (star: number) => {
+    const params = new URLSearchParams(searchParams.toString());
 
     params.delete('star');
 
-    selectedStars.forEach((star) => params.append('star', star.toString()));
+    const newStars = stars.includes(star.toString())
+      ? stars.filter((s) => s !== star.toString())
+      : [...stars, star.toString()];
 
-    router.push(`${pathname}?${params.toString()}`);
-  }, [minPrice, maxPrice, selectedCategories, selectedStars]);
+    newStars.forEach((s) => params.append('star', s));
+
+    router.push(`${pathname}?${params}`);
+  };
+
+  const setMinPrice = (value: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set('min-price', value.toString());
+
+    router.push(`${pathname}?${params}`);
+  };
+
+  const setMaxPrice = (value: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set('max-price', value.toString());
+
+    router.push(`${pathname}?${params}`);
+  };
 
   return (
     <aside className="flex flex-col gap-0 w-[20%] shrink-0 h-fit">
@@ -67,7 +78,7 @@ export default function Filters() {
             >
               <input
                 type="checkbox"
-                checked={selectedCategories.includes(category.title)}
+                checked={categories.includes(category.title)}
                 onChange={() => toggleCategory(category.title)}
                 className="w-4 h-4 rounded border-gray-300 text-emerald-500 focus:ring-emerald-400 cursor-pointer"
               />
@@ -90,14 +101,14 @@ export default function Filters() {
           <div
             className="absolute top-0 h-full rounded-full bg-emerald-500"
             style={{
-              left: `${((minPrice - 1) / (MAX_PRICE - 1)) * 100}%`,
-              right: `${100 - ((maxPrice - 1) / (MAX_PRICE - 1)) * 100}%`,
+              left: `${((minPrice - 1) / (MAX_PRICE_DEFAULT - 1)) * 100}%`,
+              right: `${100 - ((maxPrice - 1) / (MAX_PRICE_DEFAULT - 1)) * 100}%`,
             }}
           />
           <input
             type="range"
-            min={MIN_PRICE}
-            max={MAX_PRICE}
+            min={MIN_PRICE_DEFAULT}
+            max={MAX_PRICE_DEFAULT}
             value={minPrice}
             onChange={({ currentTarget: { value } }) =>
               setMinPrice(Math.min(Number(value), maxPrice - 1))
@@ -106,8 +117,8 @@ export default function Filters() {
           />
           <input
             type="range"
-            min={MIN_PRICE}
-            max={MAX_PRICE}
+            min={MIN_PRICE_DEFAULT}
+            max={MAX_PRICE_DEFAULT}
             value={maxPrice}
             onChange={({ currentTarget: { value } }) =>
               setMaxPrice(Math.max(Number(value), minPrice + 1))
@@ -128,7 +139,7 @@ export default function Filters() {
             >
               <input
                 type="checkbox"
-                checked={selectedStars.includes(star)}
+                checked={stars.includes(star.toString())}
                 onChange={() => toggleStar(star)}
                 className="w-4 h-4 rounded border-gray-300 text-emerald-500 focus:ring-emerald-400 cursor-pointer"
               />

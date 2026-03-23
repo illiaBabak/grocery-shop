@@ -1,17 +1,17 @@
 services:
-  client:
-    build:
-      context: .
-    ports:
-      - '3000:3000'
-    volumes:
-      - .:/src
-      - /src/node_modules
-    depends_on:
-      - db
-    environment:
-      NODE_ENV: development
-      DATABASE_URL: ${DATABASE_URL}
+  # client:
+  #   build:
+  #     context: .
+  #   ports:
+  #     - '3000:3000'
+  #   volumes:
+  #     - .:/src
+  #     - /src/node_modules
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     NODE_ENV: development
+  #     DATABASE_URL: ${DATABASE_URL}
 
   db:
     image: postgres:15

@@ -58,7 +58,7 @@ const foods = [
     name: 'Berry Juice',
     imageUrl: 'food/berry-juice.png',
     priceBy1kg: 4.49,
-    category: 'drinks',
+    category: 'juices',
     description: 'Refreshing mixed berry juice with a rich fruity taste and vibrant color.',
   },
   {
@@ -116,7 +116,7 @@ const foods = [
     name: 'Cherry Juice',
     imageUrl: 'food/cherry-juice.png',
     priceBy1kg: 4.99,
-    category: 'drinks',
+    category: 'juices',
     description: 'Rich cherry juice with a balanced sweet and tart flavor.',
   },
   {
@@ -145,7 +145,7 @@ const foods = [
     name: 'Citrus Juice',
     imageUrl: 'food/citrus-juice.png',
     priceBy1kg: 4.29,
-    category: 'drinks',
+    category: 'juices',
     description: 'Refreshing citrus juice blend with a lively sweet and tangy taste.',
   },
   {
@@ -202,7 +202,7 @@ const foods = [
     name: 'Green Juice',
     imageUrl: 'food/green-juice.png',
     priceBy1kg: 5.49,
-    category: 'drinks',
+    category: 'juices',
     description: 'Fresh green juice blend with a clean, light, and refreshing taste.',
   },
   {
@@ -260,7 +260,7 @@ const foods = [
     name: 'Iceberg Lettuce',
     imageUrl: 'food/lettuce.png',
     priceBy1kg: 2.49,
-    category: 'greens',
+    category: 'vegetables',
     description: 'Crisp iceberg lettuce with a refreshing bite, excellent for salads and burgers.',
   },
   {
@@ -274,7 +274,7 @@ const foods = [
     name: 'Mango Juice',
     imageUrl: 'food/mango-juice.png',
     priceBy1kg: 4.99,
-    category: 'drinks',
+    category: 'juices',
     description: 'Smooth mango juice with a tropical aroma and naturally sweet flavor.',
   },
   {
@@ -288,7 +288,7 @@ const foods = [
     name: 'Orange Juice',
     imageUrl: 'food/orange-juice.png',
     priceBy1kg: 4.49,
-    category: 'drinks',
+    category: 'juices',
     description: 'Fresh orange juice with a bright citrus taste and natural sweetness.',
   },
   {
@@ -330,7 +330,7 @@ const foods = [
     name: 'Peach Juice',
     imageUrl: 'food/peach-juice.png',
     priceBy1kg: 4.49,
-    category: 'drinks',
+    category: 'juices',
     description: 'Smooth peach juice with a delicate sweet fruit flavor.',
   },
   {
@@ -421,7 +421,7 @@ const foods = [
     name: 'Strawberry Juice',
     imageUrl: 'food/strawberry-juice.png',
     priceBy1kg: 4.49,
-    category: 'drinks',
+    category: 'juices',
     description: 'Sweet strawberry juice with a refreshing berry flavor.',
   },
   {
@@ -795,6 +795,29 @@ async function main() {
   });
 
   console.log(`⭐ Inserted ${reviewsToCreate.length} reviews`);
+
+  const ratingsByFood = new Map<string, number[]>();
+  for (const review of reviewSeeds) {
+    const foodId = foodIdByName.get(review.foodName);
+    if (!foodId) continue;
+    const existing = ratingsByFood.get(foodId) ?? [];
+    existing.push(review.stars);
+    ratingsByFood.set(foodId, existing);
+  }
+
+  await Promise.all(
+    Array.from(ratingsByFood.entries()).map(([foodId, stars]) =>
+      prisma.food.update({
+        where: { id: foodId },
+        data: {
+          rating: Math.round((stars.reduce((a, b) => a + b, 0) / stars.length) * 10) / 10,
+          reviewsCount: stars.length,
+        },
+      })
+    )
+  );
+
+  console.log(`📊 Updated ratings for ${ratingsByFood.size} foods`);
   console.log('✅ Seed finished successfully');
 }
 

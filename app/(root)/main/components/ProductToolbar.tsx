@@ -1,9 +1,9 @@
 'use client';
 
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useGetFood } from '@/services/queries';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { capitalize } from '@/utils/capitalize';
 import Badge from './Badge';
+import { Filters } from '@/types';
 
 const SORT_OPTIONS = [
   { value: 'default', label: 'Default Sorting' },
@@ -16,46 +16,43 @@ const SORT_OPTIONS = [
 const MIN_PRICE_DEFAULT = 1;
 const MAX_PRICE_DEFAULT = 50;
 
-export default function ProductToolbar() {
-  const { data: food } = useGetFood();
+type Props = {
+  foodCount: number;
+  filters: Filters;
+};
 
+export default function ProductToolbar({ foodCount, filters }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const categories = searchParams.getAll('category');
-  const stars = searchParams.getAll('star');
-  const minPrice = Number(searchParams.get('min-price') ?? MIN_PRICE_DEFAULT);
-  const maxPrice = Number(searchParams.get('max-price') ?? MAX_PRICE_DEFAULT);
-  const sort = searchParams.get('sort') ?? 'default';
+  const { categories, stars, minPrice, maxPrice, sort } = filters;
 
   const hasPriceFilter = minPrice !== MIN_PRICE_DEFAULT || maxPrice !== MAX_PRICE_DEFAULT;
-
   const hasAnyFilter = categories.length > 0 || stars.length > 0 || hasPriceFilter;
 
   const removeCategory = (category: string) => {
     const params = new URLSearchParams(searchParams.toString());
-
     const remaining = categories.filter((c) => c !== category);
+
     params.delete('category');
     remaining.forEach((c) => params.append('category', c));
 
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const removeStar = (star: string) => {
+  const removeStar = (star: number) => {
     const params = new URLSearchParams(searchParams.toString());
-
     const remaining = stars.filter((s) => s !== star);
+
     params.delete('star');
-    remaining.forEach((s) => params.append('star', s));
+    remaining.forEach((s) => params.append('star', String(s)));
 
     router.push(`${pathname}?${params.toString()}`);
   };
 
   const removePrice = () => {
     const params = new URLSearchParams(searchParams.toString());
-
     params.delete('min-price');
     params.delete('max-price');
 
@@ -81,13 +78,13 @@ export default function ProductToolbar() {
 
   return (
     <div className="flex flex-col gap-3 w-full pb-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-gray-500">
-          Found <span className="font-semibold text-gray-800">{food?.length ?? 0}</span> results
+          Found <span className="font-semibold text-gray-800">{foodCount}</span> results
         </p>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">Sort by :</span>
+          <span className="text-sm text-gray-500 shrink-0">Sort by :</span>
           <select
             value={sort}
             onChange={(e) => onSortChange(e.target.value)}
@@ -102,38 +99,42 @@ export default function ProductToolbar() {
         </div>
       </div>
 
-      {hasAnyFilter && (
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm text-gray-500 shrink-0">Active Filter</span>
+      <div className="flex items-center gap-2 flex-wrap min-h-[32px]">
+        {hasAnyFilter ? (
+          <>
+            <span className="text-sm text-gray-500 shrink-0">Active Filter</span>
 
-          {categories.map((category) => (
-            <Badge
-              key={`badge-cat-${category}`}
-              label={capitalize(category)}
-              onRemove={() => removeCategory(category)}
-            />
-          ))}
+            {categories.map((category) => (
+              <Badge
+                key={`badge-cat-${category}`}
+                label={capitalize(category)}
+                onRemove={() => removeCategory(category)}
+              />
+            ))}
 
-          {hasPriceFilter && (
-            <Badge label={`Price : $${minPrice}.00 - $${maxPrice}.00`} onRemove={removePrice} />
-          )}
+            {hasPriceFilter && (
+              <Badge label={`Price : $${minPrice}.00 - $${maxPrice}.00`} onRemove={removePrice} />
+            )}
 
-          {stars.map((star) => (
-            <Badge
-              key={`badge-star-${star}`}
-              label={`${star} Star`}
-              onRemove={() => removeStar(star)}
-            />
-          ))}
+            {stars.map((star) => (
+              <Badge
+                key={`badge-star-${star}`}
+                label={`${star} Star`}
+                onRemove={() => removeStar(star)}
+              />
+            ))}
 
-          <button
-            onClick={clearAll}
-            className="text-sm text-emerald-700 hover:text-emerald-900 font-medium ml-1 cursor-pointer transition-colors"
-          >
-            Clear All
-          </button>
-        </div>
-      )}
+            <button
+              onClick={clearAll}
+              className="text-sm text-emerald-700 hover:text-emerald-900 font-medium ml-1 cursor-pointer transition-colors"
+            >
+              Clear All
+            </button>
+          </>
+        ) : (
+          <span className="text-sm text-gray-400">No active filters</span>
+        )}
+      </div>
     </div>
   );
 }

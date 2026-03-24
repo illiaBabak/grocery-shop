@@ -35,8 +35,8 @@ export const CATEGORIES = [
     color: 'bg-orange-100',
   },
   {
-    title: 'species',
-    image: '/images/species.png',
+    title: 'spices',
+    image: '/images/spices.png',
     color: 'bg-slate-200',
   },
 ];

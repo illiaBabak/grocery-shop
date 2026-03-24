@@ -28,6 +28,8 @@ model Food {
   priceBy1kg  Float
   category    String
   description String
+  rating      Float    @default(0)
+  reviewsCount Int     @default(0)
   reviews     Review[]
   createdAt   DateTime @default(now())
 }

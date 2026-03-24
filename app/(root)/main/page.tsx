@@ -1,15 +1,11 @@
 import Filters from './components/Filters';
-import ProductToolbar from './components/ProductToolbar';
-import ProductList from './components/ProductList';
+import ProductsContent from './components/ProductsContent';
 
 export default function MainPage() {
   return (
-    <div className="h-[calc(100vh-64px)] w-full flex flex-row gap-4 w-full px-4 py-6">
+    <div className="min-h-[calc(100vh-64px)] w-full flex flex-col lg:flex-row gap-4 px-3 sm:px-4 py-4 sm:py-6">
       <Filters />
-      <div className="flex flex-col w-[80%]">
-        <ProductToolbar />
-        <ProductList />
-      </div>
+      <ProductsContent />
     </div>
   );
 }

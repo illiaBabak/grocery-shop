@@ -1,4 +1,4 @@
-import { Filters } from '@/types';
+import { FiltersType } from '@/types';
 import prisma from '../prisma';
 
 export const getFood = async ({
@@ -8,7 +8,7 @@ export const getFood = async ({
   maxPrice,
   sort,
   search,
-}: Filters & { search?: string }) => {
+}: FiltersType & { search?: string }) => {
   const food = await prisma.food.findMany({
     where: {
       ...(categories.length > 0 && {

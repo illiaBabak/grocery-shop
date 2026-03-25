@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useGetFood } from '@/services/queries';
 import ProductToolbar from './ProductToolbar';
 import ProductList from './ProductList';
-import { Filters } from '@/types';
+import { FiltersType } from '@/types';
 
 const MIN_PRICE_DEFAULT = 1;
 const MAX_PRICE_DEFAULT = 50;
@@ -13,13 +13,13 @@ const MAX_PRICE_DEFAULT = 50;
 export default function ProductsContent() {
   const searchParams = useSearchParams();
 
-  const filters: Filters = useMemo(() => {
+  const filters: FiltersType = useMemo(() => {
     return {
       categories: searchParams.getAll('category'),
       stars: searchParams.getAll('star').map(Number),
       minPrice: Number(searchParams.get('min-price') ?? MIN_PRICE_DEFAULT),
       maxPrice: Number(searchParams.get('max-price') ?? MAX_PRICE_DEFAULT),
-      sort: (searchParams.get('sort') as Filters['sort']) ?? 'default',
+      sort: (searchParams.get('sort') as FiltersType['sort']) ?? 'default',
       search: searchParams.get('search') ?? '',
     };
   }, [searchParams]);

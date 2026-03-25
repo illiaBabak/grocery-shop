@@ -1,4 +1,4 @@
-export type Filters = {
+export type FiltersType = {
   categories: string[];
   stars: number[];
   minPrice: number;

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { getUser } from '@/lib/auth/getUser';
 
 export default function Header() {
   const router = useRouter();
@@ -12,10 +13,20 @@ export default function Header() {
   const searchQuery = pathname === '/main' ? searchParams.get('search') ?? '' : '';
 
   const [search, setSearch] = useState(searchQuery);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     setSearch(searchQuery);
   }, [searchQuery]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+
+      setIsLoggedIn(!!user);
+    };
+    fetchUser();
+  }, []);
 
   const handleSearch = (search: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -110,9 +121,9 @@ export default function Header() {
               </svg>
             </button>
 
-            {/* Login */}
-            <button
-              type="button"
+            {/* User / Login */}
+            <Link
+              href={isLoggedIn ? '/user' : '/login'}
               className="flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 shadow-sm shadow-green-200 transition-all cursor-pointer shrink-0"
             >
               <svg
@@ -128,7 +139,7 @@ export default function Header() {
                   d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
                 />
               </svg>
-            </button>
+            </Link>
           </div>
         </div>
 

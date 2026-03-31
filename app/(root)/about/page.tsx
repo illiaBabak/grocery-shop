@@ -54,9 +54,9 @@ export default function AboutPage() {
       {/* Stats */}
       <section className="mx-auto max-w-4xl px-6 pb-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {STATS.map((stat) => (
+          {STATS.map((stat, index) => (
             <div
-              key={stat.label}
+              key={`${stat.label}-${index}-stat`}
               className="bg-white rounded-2xl border border-green-100 p-6 text-center shadow-sm"
             >
               <p className="text-3xl font-bold text-emerald-500">{stat.value}</p>
@@ -97,9 +97,9 @@ export default function AboutPage() {
       <section className="mx-auto max-w-7xl px-6 pb-24">
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Why Choose Us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {VALUES.map((value) => (
+          {VALUES.map((value, index) => (
             <div
-              key={value.title}
+              key={`${value.title}-${index}-value`}
               className="bg-white rounded-2xl border border-green-100 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all"
             >
               <span className="text-3xl mb-4 block">{value.icon}</span>

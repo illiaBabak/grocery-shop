@@ -27,7 +27,7 @@ export default function NotFound() {
       {/* Floating grocery items */}
       {floatingItems.map((item, i) => (
         <motion.span
-          key={i}
+          key={`${item.emoji}-${i}-floating-item`}
           className={`absolute select-none opacity-60 ${item.size}`}
           style={{
             top: item.top,
@@ -88,13 +88,18 @@ export default function NotFound() {
 
         {/* Produce row */}
         <div className="flex gap-3 text-4xl mb-8">
-          {produceRow.map((emoji, i) => (
+          {produceRow.map((emoji, index) => (
             <motion.span
-              key={i}
+              key={`${emoji}-${index}-produce-row-item`}
               className="inline-block cursor-default"
               initial={{ opacity: 0, scale: 0.3 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.3 + i * 0.07 }}
+              transition={{
+                type: 'spring',
+                stiffness: 200,
+                damping: 15,
+                delay: 0.3 + index * 0.07,
+              }}
               whileHover={{ scale: 1.3 }}
             >
               {emoji}

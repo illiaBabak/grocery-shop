@@ -1,4 +1,4 @@
-import { CheckoutToasts } from './CheckoutToasts';
+import { CheckoutToasts } from './components/CheckoutToasts';
 import Filters from './components/Filters';
 import ProductsContent from './components/ProductsContent';
 import { Suspense } from 'react';

@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { capitalize } from '@/utils/capitalize';
 import Badge from './Badge';
-import { Filters } from '@/types';
+import { FiltersType } from '@/types';
 
 const SORT_OPTIONS = [
   { value: 'default', label: 'Default Sorting' },
@@ -18,7 +18,7 @@ const MAX_PRICE_DEFAULT = 50;
 
 type Props = {
   foodCount: number;
-  filters: Filters;
+  filters: FiltersType;
 };
 
 export default function ProductToolbar({ foodCount, filters }: Props) {
@@ -90,8 +90,8 @@ export default function ProductToolbar({ foodCount, filters }: Props) {
             onChange={(e) => onSortChange(e.target.value)}
             className="text-sm font-medium text-gray-800 bg-transparent border-none focus:outline-none cursor-pointer"
           >
-            {SORT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
+            {SORT_OPTIONS.map((opt, index) => (
+              <option key={`${opt.value}-${index}-sort-option`} value={opt.value}>
                 {opt.label}
               </option>
             ))}

@@ -71,7 +71,10 @@ export default function Filters() {
     router.push(`${pathname}?${params}`);
   };
 
-  const activeCount = categories.length + stars.length + (localMinPrice !== MIN_PRICE_DEFAULT || localMaxPrice !== MAX_PRICE_DEFAULT ? 1 : 0);
+  const activeCount =
+    categories.length +
+    stars.length +
+    (localMinPrice !== MIN_PRICE_DEFAULT || localMaxPrice !== MAX_PRICE_DEFAULT ? 1 : 0);
 
   return (
     <aside className="w-full lg:w-[220px] xl:w-[260px] shrink-0 lg:h-fit">
@@ -88,7 +91,9 @@ export default function Filters() {
           )}
         </span>
         <svg
-          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

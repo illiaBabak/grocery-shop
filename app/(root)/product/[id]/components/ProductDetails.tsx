@@ -6,12 +6,11 @@ import { CartContext } from '@/contexts/cart';
 import { toast } from 'react-toastify';
 
 const WEIGHT_OPTIONS = [1, 3, 5, 10] as const;
-type Weight = (typeof WEIGHT_OPTIONS)[number];
 
 export default function ProductDetails({ food }: { food: Food }) {
   const { addToCart } = useContext(CartContext);
 
-  const [selectedWeight, setSelectedWeight] = useState<Weight>(1);
+  const [selectedWeight, setSelectedWeight] = useState<(typeof WEIGHT_OPTIONS)[number]>(1);
 
   const totalPrice = food.priceBy1kg * selectedWeight;
 
@@ -79,6 +78,7 @@ export default function ProductDetails({ food }: { food: Food }) {
         <div className="flex flex-wrap gap-2.5">
           {WEIGHT_OPTIONS.map((weight, index) => {
             const isSelected = selectedWeight === weight;
+
             return (
               <button
                 key={`${food.id}-${index}-weight-${weight}`}

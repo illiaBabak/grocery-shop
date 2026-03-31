@@ -46,9 +46,9 @@ export default async function UserPage() {
             <p className="mt-4 text-sm text-gray-400">No orders yet.</p>
           ) : (
             <ul className="mt-4 space-y-4">
-              {orders.map((order) => (
+              {orders.map((order, index) => (
                 <li
-                  key={order.id}
+                  key={`${order.id}-${index}-user-order`}
                   className="rounded-xl border border-gray-200 bg-white overflow-hidden"
                 >
                   {/* Order header */}
@@ -76,8 +76,11 @@ export default async function UserPage() {
 
                   {/* Items */}
                   <ul className="divide-y divide-gray-100">
-                    {order.items.map((item) => (
-                      <li key={item.id} className="flex items-center justify-between px-5 py-3">
+                    {order.items.map((item, index) => (
+                      <li
+                        key={`${item.id}-${index}-user-order-item`}
+                        className="flex items-center justify-between px-5 py-3"
+                      >
                         <div className="min-w-0">
                           <p className="text-sm font-medium text-gray-800 truncate">
                             {item.food.name}

@@ -6,9 +6,11 @@ import { useContext, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 
 export function CheckoutToasts() {
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const { clearCart } = useContext(CartContext);
+
   const handled = useRef(false);
 
   useEffect(() => {
@@ -19,18 +21,19 @@ export function CheckoutToasts() {
 
     if (sessionId) {
       const dedupeKey = `checkout-success:${sessionId}`;
+
       if (sessionStorage.getItem(dedupeKey)) return;
+
       sessionStorage.setItem(dedupeKey, '1');
 
-      handled.current = true;
       clearCart();
       toast.success('Payment successful. Your order is being confirmed.');
-      router.replace('/main');
     } else if (canceled) {
-      handled.current = true;
       toast.info('Checkout canceled. Your cart is unchanged.');
-      router.replace('/main');
     }
+
+    handled.current = true;
+    router.replace('/main');
   }, [searchParams, router, clearCart]);
 
   return null;

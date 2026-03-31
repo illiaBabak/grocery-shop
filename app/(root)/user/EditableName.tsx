@@ -9,6 +9,7 @@ const initialState: UpdateNameState = { success: false };
 export function EditableName({ name }: { name: string }) {
   const [editing, setEditing] = useState(false);
   const [state, formAction, isPending] = useActionState(updateNameAction, initialState);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {

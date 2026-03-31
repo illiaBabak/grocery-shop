@@ -4,7 +4,7 @@ const AUTH_PAGES = ['/login', '/register'];
 const PROTECTED_PAGES = ['/user'];
 
 export function proxy(request: NextRequest) {
-  const token = request.cookies.get('token')?.value;
+  const token = request.cookies.get('grocery-shop-token')?.value;
 
   const { pathname } = request.nextUrl;
 

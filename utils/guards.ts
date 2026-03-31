@@ -1,4 +1,5 @@
 import { Food } from '@/generated/prisma/client';
+import { CartItem, OrderItemType } from '@/types';
 
 export const isNumber = (value: unknown): value is number => typeof value === 'number';
 
@@ -36,3 +37,33 @@ export const isFoodArray = (value: unknown): value is Food[] =>
 
 export const isFoodResponse = (value: unknown): value is { food: Food[] } =>
   isObject(value) && 'food' in value && isFoodArray(value.food);
+
+export const isOrderItem = (value: unknown): value is OrderItemType =>
+  isObject(value) &&
+  'id' in value &&
+  'quantity' in value &&
+  isString(value.id) &&
+  isNumber(value.quantity);
+
+export const isOrderItemArray = (value: unknown): value is OrderItemType[] =>
+  isArray(value) && value.every(isOrderItem);
+
+export const isCheckoutResponse = (value: unknown): value is { url: string } =>
+  isObject(value) && 'url' in value && isString(value.url);
+
+export const isCartItem = (value: unknown): value is CartItem =>
+  isObject(value) &&
+  'id' in value &&
+  'imageUrl' in value &&
+  'name' in value &&
+  'price' in value &&
+  'quantity' in value &&
+  isString(value.id) &&
+  isString(value.imageUrl) &&
+  isString(value.name) &&
+  isNumber(value.price) &&
+  isNumber(value.quantity) &&
+  value.quantity > 0;
+
+export const isCartItemArray = (value: unknown): value is CartItem[] =>
+  isArray(value) && value.every(isCartItem);

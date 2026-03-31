@@ -19,6 +19,7 @@ model User {
   passwordHash String
   reviews      Review[]
   createdAt    DateTime @default(now())
+  orders       Order[]
 }
 
 model Food {
@@ -32,6 +33,7 @@ model Food {
   reviewsCount Int     @default(0)
   reviews     Review[]
   createdAt   DateTime @default(now())
+  items        OrderItem[]
 }
 
 model Review {
@@ -46,3 +48,31 @@ model Review {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  quantity Float    @default(1)
+  createdAt  DateTime @default(now())
+
+  foodId     String
+  food       Food     @relation(fields: [foodId], references: [id])
+
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+}
+
+model Order {
+  id String @id @default(uuid())
+  status String @default("pending")
+  totalPrice Float @default(0)
+  createdAt DateTime @default(now())
+
+  stripeCheckoutSessionId String? @unique
+  stripePaymentIntentId String? @unique
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  items OrderItem[]
+}
+

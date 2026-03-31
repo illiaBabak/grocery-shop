@@ -6,7 +6,7 @@ import { verifyToken, JwtPayload } from '@/lib/jwt';
 export async function getUser(): Promise<JwtPayload | null> {
   const cookieStore = await cookies();
 
-  const token = cookieStore.get('token')?.value;
+  const token = cookieStore.get('grocery-shop-token')?.value;
 
   if (!token) return null;
 

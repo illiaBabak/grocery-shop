@@ -3,9 +3,9 @@ import { GET_FOOD_QUERY } from './constants';
 import { Food } from '@/generated/prisma/client';
 import { fetchWithParams } from '@/utils/fetchWithParams';
 import { isFoodResponse } from '@/utils/guards';
-import { Filters } from '@/types';
+import { FiltersType } from '@/types';
 
-const getFood = async (filters: Filters): Promise<Food[]> => {
+const getFood = async (filters: FiltersType): Promise<Food[]> => {
   const params = new URLSearchParams();
 
   filters.categories.forEach((category) => params.append('category', category));
@@ -33,7 +33,7 @@ const getFood = async (filters: Filters): Promise<Food[]> => {
   return isFoodResponse(data) ? data.food : [];
 };
 
-export const useGetFood = (filters: Filters): UseQueryResult<Food[], Error> => {
+export const useGetFood = (filters: FiltersType): UseQueryResult<Food[], Error> => {
   return useQuery({
     queryKey: [GET_FOOD_QUERY, filters],
     queryFn: () => getFood(filters),

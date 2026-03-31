@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ReactQueryProvider } from '@/contexts/reactQuery';
 import { ToastProvider } from '@/components/Toast';
+import { CartProvider } from '@/contexts/cart';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,9 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden overflow-y-auto`}
       >
-        <ReactQueryProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </ReactQueryProvider>
+        <CartProvider>
+          <ReactQueryProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </ReactQueryProvider>
+        </CartProvider>
       </body>
     </html>
   );

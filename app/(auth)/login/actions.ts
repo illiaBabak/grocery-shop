@@ -41,7 +41,7 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
 
     const cookieStore = await cookies();
 
-    cookieStore.set('token', token, {
+    cookieStore.set('grocery-shop-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

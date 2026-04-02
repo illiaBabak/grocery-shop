@@ -8,9 +8,9 @@ export default function MainPage() {
     <div className="min-h-[calc(100vh-64px)] w-full flex flex-col lg:flex-row gap-4 px-3 sm:px-4 py-4 sm:py-6">
       <Suspense fallback={null}>
         <CheckoutToasts />
+        <Filters />
+        <ProductsContent />
       </Suspense>
-      <Filters />
-      <ProductsContent />
     </div>
   );
 }

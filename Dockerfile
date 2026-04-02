@@ -10,10 +10,8 @@ RUN pnpm install
 
 COPY . .
 
-RUN npx prisma generate
-
-RUN chmod +x ./entrypoint.sh
+RUN chmod +x ./entrypoint.dev.sh
 
 EXPOSE 3000
 
-CMD ["sh", "./entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.dev.sh"]

@@ -34,7 +34,7 @@ export default function ProductDetails({ food }: { food: Food }) {
       </span>
 
       {/* Name */}
-      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">{food.name}</h1>
+      <h1 data-testid="product-name" className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">{food.name}</h1>
 
       {/* Rating */}
       <div className="flex items-center gap-3">
@@ -82,6 +82,7 @@ export default function ProductDetails({ food }: { food: Food }) {
             return (
               <button
                 key={`${food.id}-${index}-weight-${weight}`}
+                data-testid="weight-option"
                 onClick={() => setSelectedWeight(weight)}
                 className={`
                   relative px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer
@@ -114,12 +115,13 @@ export default function ProductDetails({ food }: { food: Food }) {
 
       {/* Total price */}
       <div className="flex items-baseline gap-3">
-        <span className="text-3xl font-bold text-emerald-600">${totalPrice.toFixed(2)}</span>
+        <span data-testid="product-total-price" className="text-3xl font-bold text-emerald-600">${totalPrice.toFixed(2)}</span>
         <span className="text-sm text-gray-400">for {selectedWeight} kg</span>
       </div>
 
       {/* Add to Cart */}
       <button
+        data-testid="add-to-cart"
         onClick={handleAddToCart}
         className="group flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-4 bg-emerald-500 hover:bg-emerald-600 text-white text-lg font-semibold rounded-full shadow-lg shadow-emerald-200 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
       >

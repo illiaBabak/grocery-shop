@@ -1,15 +1,8 @@
 #!/bin/sh
-
-echo "⏳ Waiting for database..."
-
-# wait for postgres to start
-sleep 5
+set -e
 
 echo "🚀 Running migrations..."
 pnpm prisma migrate deploy
 
-echo "⚙️ Generating Prisma client..."
-pnpm prisma generate
-
-echo "🔥 Starting Next.js..."
-pnpm dev
+echo "🔥 Starting server..."
+npx next start -H 0.0.0.0

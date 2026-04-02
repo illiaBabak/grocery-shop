@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Cart from '@/components/Cart';
+import { Suspense } from 'react';
 
 export default function LayoutWithHeaderAndFooter({
   children,
@@ -9,7 +10,9 @@ export default function LayoutWithHeaderAndFooter({
 }>) {
   return (
     <div className="relative">
-      <Header />
+      <Suspense fallback={null}>
+        <Header />
+      </Suspense>
       <Cart />
       {children}
       <Footer />

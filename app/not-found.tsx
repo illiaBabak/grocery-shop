@@ -52,7 +52,7 @@ export default function NotFound() {
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-lg">
         {/* 404 Number */}
-        <div className="flex items-center gap-2 mb-6">
+        <div data-testid="not-found" className="flex items-center gap-2 mb-6">
           <motion.span
             className="text-[140px] sm:text-[180px] font-black leading-none bg-gradient-to-br from-green-500 via-emerald-500 to-green-600 bg-clip-text text-transparent"
             initial={{ opacity: 0, scale: 0.3 }}

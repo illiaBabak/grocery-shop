@@ -48,6 +48,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           {/* Logo */}
           <Link
+            data-testid="logo"
             href="/"
             className="text-base sm:text-xl font-bold text-gray-800 tracking-tight shrink-0"
           >
@@ -57,6 +58,7 @@ export default function Header() {
           {/* Nav links — desktop */}
           <nav className="hidden md:flex items-center gap-16 ml-10">
             <Link
+              data-testid="nav-products"
               href="/main"
               className={`text-sm font-medium hover:text-emerald-500 transition-colors ${
                 pathname === '/main' ? 'text-emerald-500' : 'text-gray-600'
@@ -65,6 +67,7 @@ export default function Header() {
               Products
             </Link>
             <Link
+              data-testid="nav-about"
               href="/about"
               className={`text-sm font-medium hover:text-emerald-500 transition-colors ${
                 pathname === '/about' ? 'text-emerald-500' : 'text-gray-600'
@@ -92,6 +95,7 @@ export default function Header() {
                 />
               </svg>
               <input
+                data-testid="search-input"
                 type="text"
                 value={search}
                 onChange={({ currentTarget: { value } }) => setSearch(value)}
@@ -106,12 +110,13 @@ export default function Header() {
 
             {/* Cart */}
             <button
+              data-testid="cart-button"
               type="button"
               onClick={toggleCart}
               className="relative flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-green-50 border border-green-200 text-gray-600 hover:bg-emerald-100 hover:text-emerald-700 hover:border-emerald-300 transition-colors cursor-pointer shrink-0"
             >
               {cartCount > 0 ? (
-                <span className="absolute -mt-6 ml-6 sm:-mt-7 sm:ml-7 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-emerald-600 text-white text-[10px] font-semibold shadow-sm shadow-emerald-200">
+                <span data-testid="cart-count" className="absolute -mt-6 ml-6 sm:-mt-7 sm:ml-7 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-emerald-600 text-white text-[10px] font-semibold shadow-sm shadow-emerald-200">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
               ) : null}
@@ -134,6 +139,7 @@ export default function Header() {
 
             {/* User / Login */}
             <Link
+              data-testid="user-link"
               href={isLoggedIn ? '/user' : '/login'}
               className="flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 shadow-sm shadow-green-200 transition-all cursor-pointer shrink-0"
             >

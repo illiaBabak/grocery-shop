@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "dotenv -e .env.dev -- next dev",
+    "build": "dotenv -e .env -- next build",
+    "start": "dotenv -e .env -- next start -H 0.0.0.0",
+    "lint": "eslint",
+    "test": "dotenv -e .env.test -- cypress run",
+    "test:open": "dotenv -e .env.test -- cypress open",
+    "seed": "dotenv -e .env.dev -- pnpm prisma db seed",
+    "seed:test": "dotenv -e .env.test -- pnpm prisma db seed"
   },
   "dependencies": {
     "@babylonjs/core": "^8.55.3",
@@ -34,6 +38,8 @@
     "@types/pg": "^8.18.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cypress": "^15.13.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "prisma": "^7.5.0",

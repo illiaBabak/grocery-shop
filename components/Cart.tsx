@@ -58,6 +58,7 @@ export default function Cart() {
       {/* Cart panel */}
       <aside
         role="dialog"
+        data-testid="cart-panel"
         aria-modal="true"
         aria-label="Shopping cart"
         className={[
@@ -73,7 +74,7 @@ export default function Cart() {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">Cart</h2>
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-gray-500 mt-0.5" data-testid="cart-item-count">
                   {cart.length
                     ? `${cart.length} item${cart.length === 1 ? '' : 's'}`
                     : 'Your cart is empty'}
@@ -141,6 +142,7 @@ export default function Cart() {
                     <li
                       key={`${item.id}-${item.quantity}-${index}`}
                       className="group flex gap-3 rounded-2xl border border-emerald-100 bg-white p-3 hover:bg-emerald-50/30 transition-colors"
+                      data-testid="cart-item"
                     >
                       <div className="relative w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-emerald-50 border border-emerald-100">
                         <img
@@ -169,6 +171,7 @@ export default function Cart() {
                             onClick={() => removeFromCart(index)}
                             className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-transparent text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors"
                             aria-label="Remove item"
+                            data-testid="cart-remove-item"
                           >
                             <svg
                               viewBox="0 0 24 24"
@@ -209,7 +212,7 @@ export default function Cart() {
           <div className="px-4 sm:px-5 py-4 border-t border-emerald-100 bg-white">
             <div className="flex items-center justify-between">
               <p className="text-sm text-gray-600">Total</p>
-              <p className="text-lg font-semibold text-gray-900">${total.toFixed(2)}</p>
+              <p className="text-lg font-semibold text-gray-900" data-testid="cart-total">${total.toFixed(2)}</p>
             </div>
 
             <div className="mt-3 flex gap-2">
@@ -218,6 +221,7 @@ export default function Cart() {
                 onClick={clearCart}
                 disabled={!cart.length}
                 className="flex-1 rounded-full border border-emerald-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-emerald-50 disabled:opacity-50 disabled:hover:bg-white transition-colors"
+                data-testid="cart-clear"
               >
                 Clear
               </button>
@@ -226,6 +230,7 @@ export default function Cart() {
                 disabled={!cart.length || isPending}
                 onClick={handleCheckout}
                 className="flex-1 rounded-full bg-emerald-600 hover:bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm shadow-emerald-200 disabled:opacity-50 disabled:hover:bg-emerald-600 transition-colors"
+                data-testid="cart-checkout"
               >
                 {isPending ? 'Loading...' : 'Checkout'}
               </button>
@@ -240,7 +245,7 @@ export default function Cart() {
         {/* Auth modal */}
         {showAuthModal && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/30 backdrop-blur-[2px]">
-            <div className="mx-4 w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl border border-emerald-100">
+            <div className="mx-4 w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl border border-emerald-100" data-testid="auth-modal">
               <h3 className="text-base font-semibold text-gray-900">You&apos;re not logged in</h3>
               <p className="mt-1.5 text-sm text-gray-500">
                 Would you like to sign in for order tracking, or continue as a guest?
@@ -258,6 +263,7 @@ export default function Cart() {
                   type="button"
                   onClick={() => doCheckout(true)}
                   className="inline-flex items-center justify-center rounded-full border border-emerald-200 bg-white hover:bg-emerald-50 text-sm font-medium text-gray-700 px-5 py-2.5 transition-colors"
+                  data-testid="guest-checkout"
                 >
                   Continue as guest
                 </button>

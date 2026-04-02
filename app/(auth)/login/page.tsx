@@ -106,6 +106,7 @@ export default function LoginPage() {
           {state.errors.general && (
             <motion.div
               className="mb-6 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600 text-center"
+              data-testid="login-error"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
             >
@@ -114,7 +115,7 @@ export default function LoginPage() {
           )}
 
           {/* Form */}
-          <form action={formAction} className="flex flex-col gap-5">
+          <form action={formAction} className="flex flex-col gap-5" data-testid="login-form">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -125,6 +126,7 @@ export default function LoginPage() {
               </label>
               <input
                 id="email"
+                data-testid="login-email"
                 name="email"
                 type="email"
                 key={`email-${state.success}`}
@@ -138,6 +140,7 @@ export default function LoginPage() {
               />
               {state.errors.email && (
                 <motion.p
+                  data-testid="login-email-error"
                   className="mt-1.5 text-xs text-red-500"
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -157,6 +160,7 @@ export default function LoginPage() {
               </label>
               <input
                 id="password"
+                data-testid="login-password"
                 name="password"
                 type="password"
                 key={`password-${state.success}`}
@@ -170,6 +174,7 @@ export default function LoginPage() {
               />
               {state.errors.password && (
                 <motion.p
+                  data-testid="login-password-error"
                   className="mt-1.5 text-xs text-red-500"
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -186,6 +191,7 @@ export default function LoginPage() {
             >
               <button
                 type="submit"
+                data-testid="login-submit"
                 disabled={isPending}
                 className="w-full py-3.5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold rounded-xl shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 disabled:cursor-not-allowed cursor-pointer"
               >

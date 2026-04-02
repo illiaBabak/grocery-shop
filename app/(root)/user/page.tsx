@@ -2,6 +2,7 @@ import { getUser } from '@/lib/auth/getUser';
 import { getOrdersByUser } from '@/lib/orders/getOrdersByUser';
 import { redirect } from 'next/navigation';
 import { EditableName } from './EditableName';
+import { logoutAction } from './actions';
 
 const STATUS_STYLES: Record<string, string> = {
   paid: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -31,25 +32,54 @@ export default async function UserPage() {
           </div>
         </div>
 
-        <div className="mt-5 sm:mt-6">
-          <EditableName name={user.name} />
-          <p className="mt-1 text-[15px] text-gray-500">{user.email}</p>
+        <div className="mt-5 sm:mt-6 flex items-start justify-between gap-4">
+          <div>
+            <EditableName name={user.name} />
+            <p className="mt-1 text-[15px] text-gray-500" data-testid="user-email">
+              {user.email}
+            </p>
+          </div>
+          <form action={logoutAction}>
+            <button
+              type="submit"
+              data-testid="logout-btn"
+              className="mt-1 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+                />
+              </svg>
+              Log out
+            </button>
+          </form>
         </div>
 
         <div className="mt-6 h-px bg-gray-200" />
 
         {/* Orders */}
-        <section className="mt-8 pb-12">
+        <section className="mt-8 pb-12" data-testid="order-history">
           <h2 className="text-lg font-semibold text-gray-900">Order history</h2>
 
           {!orders.length ? (
-            <p className="mt-4 text-sm text-gray-400">No orders yet.</p>
+            <p className="mt-4 text-sm text-gray-400" data-testid="no-orders">
+              No orders yet.
+            </p>
           ) : (
             <ul className="mt-4 space-y-4">
               {orders.map((order, index) => (
                 <li
                   key={`${order.id}-${index}-user-order`}
                   className="rounded-xl border border-gray-200 bg-white overflow-hidden"
+                  data-testid="order-card"
                 >
                   {/* Order header */}
                   <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 bg-gray-50/70 border-b border-gray-100">
@@ -58,6 +88,7 @@ export default async function UserPage() {
                         className={`inline-flex items-center text-xs font-medium px-2.5 py-0.5 rounded-full border capitalize ${
                           STATUS_STYLES[order.status] ?? 'bg-gray-50 text-gray-600 border-gray-200'
                         }`}
+                        data-testid="order-status"
                       >
                         {order.status}
                       </span>

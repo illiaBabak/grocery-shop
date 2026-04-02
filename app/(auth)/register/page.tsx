@@ -107,6 +107,7 @@ export default function RegisterPage() {
           {state.errors.general && (
             <motion.div
               className="mb-6 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600 text-center"
+              data-testid="register-error"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
             >
@@ -115,7 +116,7 @@ export default function RegisterPage() {
           )}
 
           {/* Form */}
-          <form action={formAction} className="flex flex-col gap-5">
+          <form action={formAction} className="flex flex-col gap-5" data-testid="register-form">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -126,6 +127,7 @@ export default function RegisterPage() {
               </label>
               <input
                 id="name"
+                data-testid="register-name"
                 name="name"
                 type="text"
                 key={`name-${state.success}`}
@@ -139,6 +141,7 @@ export default function RegisterPage() {
               />
               {state.errors.name && (
                 <motion.p
+                  data-testid="register-name-error"
                   className="mt-1.5 text-xs text-red-500"
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -158,6 +161,7 @@ export default function RegisterPage() {
               </label>
               <input
                 id="email"
+                data-testid="register-email"
                 name="email"
                 type="email"
                 key={`email-${state.success}`}
@@ -171,6 +175,7 @@ export default function RegisterPage() {
               />
               {state.errors.email && (
                 <motion.p
+                  data-testid="register-email-error"
                   className="mt-1.5 text-xs text-red-500"
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -190,6 +195,7 @@ export default function RegisterPage() {
               </label>
               <input
                 id="password"
+                data-testid="register-password"
                 name="password"
                 type="password"
                 key={`password-${state.success}`}
@@ -203,6 +209,7 @@ export default function RegisterPage() {
               />
               {state.errors.password && (
                 <motion.p
+                  data-testid="register-password-error"
                   className="mt-1.5 text-xs text-red-500"
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -225,6 +232,7 @@ export default function RegisterPage() {
               </label>
               <input
                 id="confirmPassword"
+                data-testid="register-confirm-password"
                 name="confirmPassword"
                 type="password"
                 key={`confirmPassword-${state.success}`}
@@ -238,6 +246,7 @@ export default function RegisterPage() {
               />
               {state.errors.confirmPassword && (
                 <motion.p
+                  data-testid="register-confirm-error"
                   className="mt-1.5 text-xs text-red-500"
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -254,6 +263,7 @@ export default function RegisterPage() {
             >
               <button
                 type="submit"
+                data-testid="register-submit"
                 disabled={isPending}
                 className="w-full py-3.5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold rounded-xl shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 disabled:cursor-not-allowed cursor-pointer"
               >

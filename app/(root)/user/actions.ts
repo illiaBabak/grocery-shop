@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { getUser } from '@/lib/auth/getUser';
 import { updateUser } from '@/lib/auth/updateUser';
 import { signToken } from '@/lib/jwt';
+import { redirect } from 'next/navigation';
 
 export type UpdateNameState = {
   error?: string;
@@ -47,4 +48,11 @@ export async function updateNameAction(
   } catch {
     return { error: 'Failed to update name', success: false };
   }
+}
+
+export async function logoutAction(): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.delete('grocery-shop-token');
+
+  redirect('/login');
 }

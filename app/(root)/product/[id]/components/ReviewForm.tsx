@@ -39,7 +39,7 @@ export default function ReviewForm({ userId, foodId }: ReviewFormProps) {
 
   if (!userId) {
     return (
-      <div className="rounded-2xl liquid-glass p-6 sm:p-8 relative overflow-hidden text-center">
+      <div data-testid="review-login-prompt" className="rounded-2xl liquid-glass p-6 sm:p-8 relative overflow-hidden text-center">
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/40 via-white/10 to-transparent pointer-events-none" />
         <div className="relative flex flex-col items-center gap-4">
           <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
@@ -84,6 +84,7 @@ export default function ReviewForm({ userId, foodId }: ReviewFormProps) {
 
   return (
     <form
+      data-testid="review-form"
       onSubmit={(e) => {
         e.preventDefault();
         handleSubmit();
@@ -104,6 +105,7 @@ export default function ReviewForm({ userId, foodId }: ReviewFormProps) {
               return (
                 <button
                   key={`review-star-${i}`}
+                  data-testid="review-star"
                   type="button"
                   onClick={() => setStars(starValue)}
                   onMouseEnter={() => setHoveredStar(starValue)}
@@ -131,6 +133,7 @@ export default function ReviewForm({ userId, foodId }: ReviewFormProps) {
             Your review
           </label>
           <textarea
+            data-testid="review-content"
             id="review-content"
             name="content"
             value={content}
@@ -142,6 +145,7 @@ export default function ReviewForm({ userId, foodId }: ReviewFormProps) {
         </div>
 
         <button
+          data-testid="review-submit"
           type="submit"
           disabled={loading || stars === 0 || content.trim().length === 0}
           className="self-start px-8 py-3 bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-full shadow-md shadow-emerald-200 disabled:shadow-none transition-all duration-200 hover:shadow-lg hover:shadow-emerald-300 cursor-pointer"

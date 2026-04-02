@@ -28,7 +28,7 @@ export default function StartPage() {
                 href="/main"
                 className="inline-flex items-center gap-3 px-10 py-5 bg-emerald-500 hover:bg-emerald-600 text-white text-lg sm:text-xl font-semibold rounded-full shadow-lg shadow-emerald-200 transition-all hover:shadow-emerald-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                Start Shopping
+                <span data-testid="start-shopping">Start Shopping</span>
                 <svg
                   className="w-5 h-5"
                   fill="none"

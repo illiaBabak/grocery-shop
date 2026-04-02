@@ -731,6 +731,8 @@ const reviewSeeds = [
 async function main() {
   console.log('🌱 Starting seed...');
 
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
   await prisma.review.deleteMany();
   await prisma.food.deleteMany();
   await prisma.user.deleteMany();

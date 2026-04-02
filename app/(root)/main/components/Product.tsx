@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function Product({ item }: { item: Food }) {
   return (
     <Link href={`/product/${item.id}`}>
-      <div className="group relative rounded-2xl overflow-hidden liquid-glass cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+      <div data-testid="product-card" className="group relative rounded-2xl overflow-hidden liquid-glass cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/40 via-white/10 to-transparent pointer-events-none" />
         <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none" />
 

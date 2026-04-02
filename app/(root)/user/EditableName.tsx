@@ -26,12 +26,13 @@ export function EditableName({ name }: { name: string }) {
   if (!editing) {
     return (
       <div className="flex items-center gap-2 group">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{name}</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900" data-testid="user-name">{name}</h1>
         <button
           type="button"
           onClick={() => setEditing(true)}
           className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 transition-all"
           aria-label="Edit name"
+          data-testid="edit-name-btn"
         >
           <svg
             className="w-4 h-4"
@@ -57,6 +58,7 @@ export function EditableName({ name }: { name: string }) {
         ref={inputRef}
         name="name"
         defaultValue={name}
+        data-testid="edit-name-input"
         className="text-2xl sm:text-3xl font-bold text-gray-900 bg-transparent border-b-2 border-emerald-400 outline-none py-0.5 w-full max-w-xs"
         onKeyDown={(e) => {
           if (e.key === 'Escape') setEditing(false);
@@ -67,6 +69,7 @@ export function EditableName({ name }: { name: string }) {
         disabled={isPending}
         className="p-1.5 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-colors disabled:opacity-50"
         aria-label="Save"
+        data-testid="edit-name-save"
       >
         <svg
           className="w-5 h-5"

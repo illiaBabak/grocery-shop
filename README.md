@@ -43,6 +43,7 @@ This project was built as a **full-stack grocery store**, with the main purpose 
 
 - **Stripe** — checkout sessions, webhooks, payment processing
 - **Supabase** — image storage for product photos
+- **Mailgun** — transactional email for automated digests (production cron)
 
 ### UI & Animations
 
@@ -111,6 +112,12 @@ This project was built as a **full-stack grocery store**, with the main purpose 
 - JWT-based sessions stored in `httpOnly` cookies
 - Server-side `getUser()` verification
 
+### 📧 Orders digest (cron + Mailgun)
+
+- **POST** `/api/cron/orders-digest` loads orders from the **last 2 hours** via Prisma and sends a plain-text summary by **Mailgun** to the configured inbox (sandbox or verified domain).
+- Protected with **`Authorization: Bearer <CRON_SECRET>`** (same value as `CRON_SECRET` in `.env`).
+- In **`compose.production.yaml`**, the **`scheduler`** service runs **Alpine** `crond` and calls that endpoint every **3 minutes** (adjust the cron expression in the file if you need a different interval).
+
 ## 🛠 Prerequisites
 
 - **Node.js** v22+
@@ -156,7 +163,17 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...   # ← obtained from Stripe CLI (see below)
+
+# Mailgun + cron digest (required for production Docker scheduler / manual POST to /api/cron/orders-digest)
+MAILGUN_API_KEY=            # Private API key from Mailgun dashboard (do not commit real values)
+MAILGUN_DOMAIN=             # Sending domain, e.g. sandbox … .mailgun.org or your verified domain
+CRON_SECRET=                # Shared secret; scheduler sends Authorization: Bearer <CRON_SECRET>
+
+# Optional — only if your Mailgun account uses the EU API endpoint
+# MAILGUN_API_URL=https://api.eu.mailgun.net
 ```
+
+For **Mailgun sandbox** domains, add the recipient address as an **authorized recipient** in the Mailgun UI, or messages to that inbox will not be delivered.
 
 ## 🚀 Running the Project
 
@@ -229,6 +246,7 @@ The compose file handles the rest:
 - Multi-stage build via `Dockerfile.prod` (base → deps → build → runner)
 - PostgreSQL healthcheck — the app container waits until the DB is ready
 - `DATABASE_URL` is overridden to point to the internal Docker network (`db:5432`)
+- **`scheduler`** — Alpine + `curl` + `crond`, hits `/api/cron/orders-digest` on a schedule (requires `CRON_SECRET`, `MAILGUN_*` in `.env`). After changing the secret or cron line, recreate the container: `docker compose -f compose.production.yaml up -d --force-recreate scheduler`
 
 ## 📁 Project Structure
 
@@ -249,6 +267,7 @@ app/
 │   └── user/                           # Profile + order history
 └── api/
     ├── checkout/route.ts               # Stripe checkout session creation
+    ├── cron/orders-digest/route.ts     # Cron: orders digest email (Mailgun)
     ├── food/route.ts                   # Product listing API
     └── stripe/webhook/route.ts         # Stripe webhook handler
 
@@ -260,6 +279,7 @@ lib/                                    # Server-side logic
 ├── orders/                             # Order CRUD
 ├── reviews/                            # Review CRUD + rating recalculation
 ├── storage/                            # Supabase image URL helper
+├── mailgun.ts                          # Mailgun.js client
 ├── prisma.ts                           # Prisma client instance
 └── stripe.ts                           # Stripe client instance
 services/                               # Client-side API layer (queries, mutations)
@@ -288,14 +308,14 @@ E2E tests use **Cypress** with `data-testid` selectors for resilience against UI
 
 ## 🐳 Docker Overview
 
-| File                      | Purpose                                                     |
-| ------------------------- | ----------------------------------------------------------- |
-| `Dockerfile`              | Dev image — installs deps, runs `entrypoint.dev.sh`         |
-| `Dockerfile.prod`         | Multi-stage prod build (base → deps → build → runner)       |
-| `compose.yaml`            | Dev — PostgreSQL + pgAdmin                                  |
-| `compose.test.yaml`       | Test — PostgreSQL + pgAdmin (separate volume)               |
-| `compose.production.yaml` | Prod — Next.js + PostgreSQL + pgAdmin (with healthcheck)    |
-| `entrypoint.dev.sh`       | Dev startup: `migrate dev` → `prisma generate` → `pnpm dev` |
-| `entrypoint.sh`           | Prod startup: `migrate deploy` → `next start`               |
+| File                      | Purpose                                                                     |
+| ------------------------- | --------------------------------------------------------------------------- |
+| `Dockerfile`              | Dev image — installs deps, runs `entrypoint.dev.sh`                         |
+| `Dockerfile.prod`         | Multi-stage prod build (base → deps → build → runner)                       |
+| `compose.yaml`            | Dev — PostgreSQL + pgAdmin                                                  |
+| `compose.test.yaml`       | Test — PostgreSQL + pgAdmin (separate volume)                               |
+| `compose.production.yaml` | Prod — Next.js + PostgreSQL + pgAdmin + **scheduler** (cron → digest email) |
+| `entrypoint.dev.sh`       | Dev startup: `migrate dev` → `prisma generate` → `pnpm dev`                 |
+| `entrypoint.sh`           | Prod startup: `migrate deploy` → `next start`                               |
 
 ---
